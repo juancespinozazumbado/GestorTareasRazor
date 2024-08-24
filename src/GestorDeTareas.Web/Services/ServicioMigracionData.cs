@@ -12,12 +12,11 @@ public static class ServicioMigracionData
             var dbCOntext = serviceScope.ServiceProvider.GetRequiredService<TareasContext>();
 
             //Usar esta configuracion para SQLite 
-            var result = dbCOntext.Database.EnsureCreated();
-
-            if (result) { }
 
             //Usar esta configuracion para SQL Server
-            //await dbCOntext.Database.MigrateAsync();
+            await dbCOntext.Database.MigrateAsync();
+
+            var result = dbCOntext.Database.EnsureCreated();
 
 
         }
