@@ -6,10 +6,23 @@
 # dotenv files
 .env
 
-.sqlite
-.db
-.zip
-.7z
+# Ignore SQLite database files
+*.sqlite
+*.sqlite3
+*.sqlite-wal
+*.sqlite-shm
+
+# Ignore SQLite lock and journal files
+*.db-wal
+*.db-shm
+*.db-journal
+
+# Optional: Ignore database backup files (if any)
+*.bak
+*.db.backup
+
+
+
 
 # User-specific files
 *.rsuser

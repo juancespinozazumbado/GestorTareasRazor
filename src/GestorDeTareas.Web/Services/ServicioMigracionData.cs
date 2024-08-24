@@ -10,7 +10,14 @@ public static class ServicioMigracionData
         using (var serviceScope = app.ApplicationServices.CreateScope())
         {
             var dbCOntext = serviceScope.ServiceProvider.GetRequiredService<TareasContext>();
-            await dbCOntext.Database.MigrateAsync();
+
+            //Usar esta configuracion para SQLite 
+            var result = dbCOntext.Database.EnsureCreated();
+
+            if (result) { }
+
+            //Usar esta configuracion para SQL Server
+            //await dbCOntext.Database.MigrateAsync();
 
 
         }

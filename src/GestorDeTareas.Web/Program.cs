@@ -8,14 +8,21 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 //ar connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-var connectionString = Environment.GetEnvironmentVariable("SQLSERVERCONNECTION");
 
-builder.Services.AddDbContext<GestorDeTareas.Web.Data.TareasContext>(options =>
-    options.UseSqlServer(connectionString));
+//var connectionString = Environment.GetEnvironmentVariable("SQLSERVERCONNECTION");
+
+//builder.Services.AddDbContext<TareasContext>(options =>
+//    options.UseSqlServer(connectionString));
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<TareasContext>(options =>
+  options.UseSqlite(connectionString));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<Usuario>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<TareasContext>();
+
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
@@ -30,6 +37,7 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
+    ServicioMigracionData.InicializarMigracionDeDatos(app);
     app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
