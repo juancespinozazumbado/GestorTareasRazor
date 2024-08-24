@@ -29,7 +29,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore ./GestorDeTareas.sln
     - name: Build
-      run: dotnet build ./MiniBot.sln --configuration Release --no-restore
+      run: dotnet build ./GestorDeTareas.sln --configuration Release --no-restore
     - name: Publish project
       run: dotnet publish ./src/GestorDeTareas.Web/GestorDeTareas.Web.csproj --configuration Release --no-build --output ${{env.AZURE_WEBAPP_PACKAGE_PATH}}
     - name: 'Login via Azure CLI'
