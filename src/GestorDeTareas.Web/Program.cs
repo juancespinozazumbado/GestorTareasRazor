@@ -9,14 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 //ar connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 
-//var connectionString = Environment.GetEnvironmentVariable("SQLSERVERCONNECTION");
-
-//builder.Services.AddDbContext<TareasContext>(options =>
-//    options.UseSqlServer(connectionString));
-
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<TareasContext>(options =>
-  options.UseSqlite(connectionString));
+builder.Services.AgregarDbContext(builder.Configuration, true);
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -37,7 +30,7 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    ServicioMigracionData.InicializarMigracionDeDatos(app);
+    //ServicioMigracionData.InicializarMigracionDeDatos(app);
     app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
