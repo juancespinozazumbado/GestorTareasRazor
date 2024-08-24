@@ -1,17 +1,21 @@
 using GestorDeTareas.Web.Data;
+using GestorDeTareas.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+//ar connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+var connectionString = Environment.GetEnvironmentVariable("SQLSERVERCONNECTION");
+
+builder.Services.AddDbContext<GestorDeTareas.Web.Data.TareasContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddEntityFrameworkStores<TareasContext>();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
@@ -20,6 +24,9 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
+    // Ejecuta una migracion a la Base de datos.
+    //Usar solo en Development !!
+    ServicioMigracionData.InicializarMigracionDeDatos(app);
 }
 else
 {
