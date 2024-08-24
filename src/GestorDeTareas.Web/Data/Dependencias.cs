@@ -8,12 +8,10 @@ public static class Dependencias
     {
         if (enMemory)
         {
-            var connectionString = Environment.GetEnvironmentVariable("SQLITECONNECTIONSTRING");
+            var connectionString = Environment.GetEnvironmentVariable("SQLITECONNECTIONSTRING", EnvironmentVariableTarget.User);
 
             services.AddDbContext<TareasContext>(options =>
                 options.UseSqlite(connectionString));
-
-
 
         }
         else
