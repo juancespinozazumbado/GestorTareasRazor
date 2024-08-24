@@ -1,0 +1,18 @@
+version: '3.4'
+
+services:
+  gestordetareas.web:
+    image: ${DOCKER_REGISTRY-}gestordetareasweb
+    build:
+      context: .
+      dockerfile: src/GestorDeTareas.Web/Dockerfile
+    depends_on:
+     - SqlServer
+
+  SqlServer:
+    image: mcr.microsoft.com/azure-sql-edge
+    ports:
+      - "1433:1433"
+    environment:
+      - SA_PASSWORD=${DB_PASSWD}
+      - ACCEPT_EULA=Y

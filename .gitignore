@@ -6,6 +6,24 @@
 # dotenv files
 .env
 
+# Ignore SQLite database files
+*.sqlite
+*.sqlite3
+*.sqlite-wal
+*.sqlite-shm
+
+# Ignore SQLite lock and journal files
+*.db-wal
+*.db-shm
+*.db-journal
+
+# Optional: Ignore database backup files (if any)
+*.bak
+*.db.backup
+
+
+
+
 # User-specific files
 *.rsuser
 *.suo
@@ -482,3 +500,4 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+/src/GestorDeTareas.Web/wwwroot/App_Data/Tareas.sqlite
