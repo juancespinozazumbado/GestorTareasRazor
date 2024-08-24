@@ -26,7 +26,7 @@ if (app.Environment.IsDevelopment())
     app.UseMigrationsEndPoint();
     // Ejecuta una migracion a la Base de datos.
     //Usar solo en Development !!
-    ServicioMigracionData.InicializarMigracionDeDatos(app);
+   /// ServicioMigracionData.InicializarMigracionDeDatos(app);
 }
 else
 {

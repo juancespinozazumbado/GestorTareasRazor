@@ -15,8 +15,8 @@ public class UsersConfiguracion : IEntityTypeConfiguration<Usuario>
         var usuarioDefoult = new Usuario
         {
             Id = Guid.NewGuid().ToString(),
-            UserName = "admin",
-            NormalizedUserName = "admin".ToUpper(),
+            UserName = "admin@tareas.net",
+            NormalizedUserName = "admin@tareas.net".ToUpper(),
             Email = "admin@tareas.net",
             NormalizedEmail = "admin@tareas.net".ToUpper(),
             EmailConfirmed = true
