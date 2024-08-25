@@ -1,0 +1,83 @@
+﻿@page
+@model GestorDeTareas.Web.Pages.Cuenta.LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card shadow-sm p-4" style="max-width: 400px; width: 100%;">
+        <!-- Logo -->
+        <div class="text-center">
+            <img src="~/images/Tareas_logo.png" alt="Logo" class="mb-4" style="height: 60px;">
+        </div>
+
+        <!-- Login Form -->
+        <h3 class="text-center mb-4">Sign In</h3>
+        <form method="post">
+            <!-- Username or Email Input -->
+            <div class="mb-3">
+                <label for="email" class="form-label">Username or primary email</label>
+                <input asp-for="Input.Email" type="email" class="form-control" id="email" name="email" required>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+
+            <!-- Password Input -->
+            <div class="mb-3 position-relative">
+                <label for="password" class="form-label">Password</label>
+                <input asp-for="Input.Password"  type="password" class="form-control" id="password" name="password" required>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+               @*  <a href="#" class="small position-absolute top-50 end-0 translate-middle-y me-2">Forgot your password?</a> *@
+            </div>
+
+            <!-- Remember Me Checkbox -->
+            <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="rememberMe">
+                <label class="form-check-label" for="rememberMe">Remember me</label>
+            </div>
+
+            <!-- Sign In Button -->
+            <button type="submit" class="btn btn-primary w-100">Sign In</button>
+        </form>
+
+       @*  <!-- Terms and Privacy Links -->
+        <p class="text-center small mt-3">
+            By signing in you accept the <a href="#">Terms of Use</a> and acknowledge the <a href="#">Privacy Statement</a> and <a href="#">Cookie Policy</a>.
+        </p> *@
+
+        <!-- Register and Alternate Login Options -->
+        <div class="text-center mt-3">
+            <span class="small">Don't have an account yet? <a asp-page="/Cuenta/Registro"/> Register now </span>
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+@* <form method="post">
+    <div class="form-group">
+        <label asp-for="Input.Email"></label>
+        <input asp-for="Input.Email" class="form-control" />
+        <span asp-validation-for="Input.Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Input.Password"></label>
+        <input asp-for="Input.Password" type="password" class="form-control" />
+        <span asp-validation-for="Input.Password" class="text-danger"></span>
+    </div>
+    <div class="form-group form-check">
+        <input asp-for="Input.RememberMe" class="form-check-input" />
+        <label asp-for="Input.RememberMe" class="form-check-label"></label>
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
+
+<div>
+    <a asp-page="/Cuenta/Registro">Register as a new user</a>
+</div> *@

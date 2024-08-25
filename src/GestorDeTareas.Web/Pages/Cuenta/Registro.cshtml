@@ -1,0 +1,100 @@
+﻿@page
+@model GestorDeTareas.Web.Pages.Cuenta.RegistroModel
+@{
+    ViewData["Title"] = "Registro";
+}
+
+@* 
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card shadow-sm p-4" style="max-width: 400px; width: 100%;">
+        <!-- Top Image -->
+        <div class="text-center">
+            <img src="~/images/Tareas_logo.png" alt="Logo" class="mb-4" style="height: 60px;">
+        </div>
+
+        <!-- Registration Form -->
+        <h3 class="text-center mb-4">Register</h3>
+        <form method="post">
+           
+
+            <!-- Email -->
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input asp-for="Input.Email" type="email" class="form-control" id="email" name="email" required>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                <div class="form-text">We recommend a work email address.</div>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3 position-relative">
+                <label for="password" class="form-label">Password</label>
+                <input asp-for="Input.Password" type="password" class="form-control" id="password" name="password" required>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                <div class="form-text">Minimum length is 8 characters.</div>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mb-3 position-relative">
+                <label for="password" class="form-label">Password</label>
+                <input asp-for="Input.ConfirmPassword" type="password" class="form-control" id="password" name="password" required>
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                <div class="form-text">Minimum length is 8 characters.</div>
+            </div>
+
+            <!-- Register Button -->
+            <button type="submit" class="btn btn-primary w-100">Register</button>
+        </form>
+
+        <!-- Terms and Privacy Links -->
+        <p class="text-center small mt-3">
+            Si ya posee una cunenta puede iniciar sescion  <a asp-page="/Cuenta/Login">aqui</a> and acknowledge the <a href="#">Privacy Statement</a> and <a href="#">Cookie Policy</a>.
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+ *@
+
+
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card shadow-sm p-4" style="max-width: 400px; width: 100%;">
+        <!-- Top Image -->
+        <div class="text-center">
+            <img src="~/images/Tareas_logo.png" alt="Logo" class="mb-4" style="height: 60px;">
+        </div>
+
+        <!-- Registration Form -->
+        <h3 class="text-center mb-4">Register</h3>
+
+        <form method="post">
+            <div class="mb-3 position-relative">
+                <label asp-for="Input.Email"></label>
+                <input asp-for="Input.Email" class="form-control" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="mb-3 position-relative">
+                <label asp-for="Input.Password"></label>
+                <input asp-for="Input.Password" type="password" class="form-control" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="mb-3 position-relative">
+                <label asp-for="Input.ConfirmPassword"></label>
+                <input asp-for="Input.ConfirmPassword" type="password" class="form-control" />
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                <div class="form-text"></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Register</button>
+
+        </form>
+
+        <!-- Terms and Privacy Links -->
+        <p class="text-center small mt-3">
+            Si ya posee una cunenta puede iniciar sescion  <a asp-page="/Cuenta/Login">aqui</a>.
+        </p>
+    </div>
+</div>

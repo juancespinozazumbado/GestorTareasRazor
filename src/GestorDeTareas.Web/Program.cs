@@ -16,7 +16,20 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<Usuario>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<TareasContext>();
 
-builder.Services.AddRazorPages();
+builder.Services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
+
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AllowAnonymousToFolder("/Cuenta");
+    options.Conventions.AllowAnonymousToPage("/Cuenta/Registro");
+    options.Conventions.AuthorizePage("/Index");
+});
+
+builder.Services.ConfigureApplicationCookie(cookieOptions =>
+{
+    cookieOptions.LoginPath = "/Cuenta/Login";
+    cookieOptions.LogoutPath = "/";
+});
 
 var app = builder.Build();
 
@@ -26,11 +39,11 @@ if (app.Environment.IsDevelopment())
     app.UseMigrationsEndPoint();
     // Ejecuta una migracion a la Base de datos.
     //Usar solo en Development !!
-    ServicioMigracionData.InicializarMigracionDeDatos(app);
+  //  ServicioMigracionData.InicializarMigracionDeDatos(app);
 }
 else
 {
-    ServicioMigracionData.InicializarMigracionDeDatos(app);
+    //ServicioMigracionData.InicializarMigracionDeDatos(app);
     app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
