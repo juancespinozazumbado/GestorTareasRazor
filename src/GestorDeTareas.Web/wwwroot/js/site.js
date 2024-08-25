@@ -1,4 +1,33 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿const toggler = document.querySelector(".toggler-btn");
+toggler.addEventListener("click", function () {
+    document.querySelector("#sidebar").classList.toggle("collapsed");
+});
 
-// Write your JavaScript code.
+
+
+
+$("#logout").click(function (e) {
+    e.preventDefault();
+
+        $.ajax({
+            url: '/Cuenta/Login?handler=Logout',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("XSRF-TOKEN",
+                    $('input:hidden[name="__RequestVerificationToken"]').val());
+            },
+            method: 'POST',
+     
+            success: function (response) {
+                if (response.status == "Ok") {
+                    alert(response.status);
+                    window.location.href = '/';
+                } else {
+                    alert('Logout failed.');
+                }
+            },
+            error: function (error) {
+                alert('An error occurred during logout.');
+                console.log(error);
+            }
+        });
+});
