@@ -14,7 +14,7 @@ public static class ServicioMigracionData
             //Usar esta configuracion para SQLite 
 
             //Usar esta configuracion para SQL Server
-            await dbCOntext.Database.MigrateAsync();
+            //await dbCOntext.Database.MigrateAsync();
 
             var result = dbCOntext.Database.EnsureCreated();
 

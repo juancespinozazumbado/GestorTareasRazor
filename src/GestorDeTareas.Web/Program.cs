@@ -13,7 +13,7 @@ builder.Services.AgregarDbContext(builder.Configuration, true);
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<Usuario>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<Usuario>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<TareasContext>();
 
 builder.Services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
@@ -39,11 +39,11 @@ if (app.Environment.IsDevelopment())
     app.UseMigrationsEndPoint();
     // Ejecuta una migracion a la Base de datos.
     //Usar solo en Development !!
-  //  ServicioMigracionData.InicializarMigracionDeDatos(app);
+  ServicioMigracionData.InicializarMigracionDeDatos(app);
 }
 else
 {
-    //ServicioMigracionData.InicializarMigracionDeDatos(app);
+    ServicioMigracionData.InicializarMigracionDeDatos(app);
     app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
