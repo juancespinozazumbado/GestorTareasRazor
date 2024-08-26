@@ -151,7 +151,6 @@ namespace GestorDeTareas.Web.Pages
             treaporEditar.Titulo = tarea.Titulo;
             treaporEditar.Descripcion = tarea.Descripcion;
             treaporEditar.FechaFinalizacion = tarea.FechaFinalizacion;
-            treaporEditar.IsTerminada = tarea.IsTerminada;
 
             _context.Tareas.Update(treaporEditar);
 
