@@ -3,12 +3,17 @@
 @{
     ViewData["Title"] = "Home page";
 }
-
 <div class="container-fluid mt-4">
-    <!-- Page Title -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <h2>Gestion de Tareas </h2>
+    <!-- Titulo de la pagina -->
+    <div class="row mb-4 align-items-center">
+        <div class="col-6">
+            <h2>Gestion de Tareas</h2>
+        </div>
+        <div class="col-6 text-end">
+            <!-- Boton alineado a la derecha -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createTaskModal">
+                <i class="bi bi-plus-circle-fill"></i> Nueva
+            </button>
         </div>
     </div>
 
@@ -19,22 +24,11 @@
                 <div class="card-body d-flex flex-column p-0">
                     <div class="row g-0 w-100">
                         <div class="col-12 col-md-6 p-3">
-                            <h5>Bienvenido nuevamente @User.Identity.Name.Split("@").First()</h5>
-                            <p class="mb-0">Gestor de Tareas</p>
-                            <!-- Button to trigger modal -->
-                            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#createTaskModal">
-                                <i class="bi bi-plus-circle-fill"></i> Nueva
-                            </button>
+                            <h5>Bienvenido nuevamente @User.Identity.Name</h5>
+                           
+                          
                         </div>
-                        <div class="col-12 col-md-6 text-end d-flex align-items-end">
-                            <img src="image/customer-support.jpg" class="img-fluid illustration-img" alt="">
-                            <div class="input-group rounded ms-md-3">
-                                <input type="search" class="form-control rounded" id="search-input" placeholder="Buscar..." aria-label="Search" aria-describedby="search-addon" />
-                                <span class="input-group-text border-0" id="search-addon">
-                                    <i class="bi bi-search"></i>
-                                </span>
-                            </div>
-                        </div>
+                     
                     </div>
                 </div>
             </div>
@@ -70,7 +64,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <!-- Task creation form -->
+                        <!-- Form para Crear una tarea -->
                         <form id="createTaskForm" method="post">
                             <div class="mb-3">
 
@@ -104,7 +98,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- Task creation form -->
+                <!-- Form para editar una tarea -->
                 <form id="editTaskForm" method="post">
                     <div class="mb-3">
                         <input asp-for="Tarea.Id" hidden="hidden" type="text" class="form-control" id="editarTareaId" name="Id" required>
@@ -120,10 +114,6 @@
                         <label for="taskDueDate" class="form-label">Fecha</label>
                         <input asp-for="Tarea.FechaFinalizacion" type="date" class="form-control" id="editarTareaFechaFinalizacion" name="FechaFinalizacion" required>
                     </div>
-                @*     <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="editarTareaIsTerminada" name="IsTerminada">
-                        <label asp-for="Tarea.IsTerminada" 1class="form-check-label" for="editTaskCompleted">Completed</label>
-                    </div> *@
                     <button type="submit" class="btn btn-primary">Guardar</button>
                 </form>
             </div>
