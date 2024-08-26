@@ -4,9 +4,9 @@ namespace GestorDeTareas.Web.Data;
 
 public static class Dependencias
 {
-    public static IServiceCollection AgregarDbContext(this IServiceCollection services, IConfiguration configuration, bool enMemory = false, bool useSqlite = false)
+    public static IServiceCollection AgregarDbContext(this IServiceCollection services, IConfiguration configuration, bool useInMemory = false, bool useSqlite = false)
     {
-        if (enMemory)
+        if (useInMemory)
         {
 
 
