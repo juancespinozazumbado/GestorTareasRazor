@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Metrics;
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
 
@@ -22,7 +23,10 @@ namespace GestorDeTareas.Web.Pages
         {
             _logger = logger;
             _context = contex;
+          
         }
+
+        [BindProperty]
         public List<Tarea> Tareas { get; set; }
 
         public IActionResult OnGetTareas(string searchQuery = null)

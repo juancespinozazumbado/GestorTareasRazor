@@ -17,7 +17,7 @@ function cargarTareas(query) {
         type: 'GET',
         data: { searchQuery: query },
         success: function (data) {
-
+             
             console.log(data);
             renderTareas(data);
 
@@ -41,20 +41,38 @@ function renderTareas(data) {
     let completedTasksHtml = '';
     let pendingTasksHtml = '';
 
-    data.forEach(task => {
-        var hoy = Date.now();
+    var hoy = Date.now();
 
-        const currentDate = new Date();
+    var tareasVencidas = data.filter(task => {
+        const fecha = new Date(task.fechaFinalizacion);
+        return fecha < hoy;
+    });
+
+    var tareasContTiempo = data.filter(task => {
+        const fecha = new Date(task.fechaFinalizacion);
+        return fecha > hoy;
+
+    });
+
+    $("#infoTareasCompletas").text(`Tareas : ${data.length}`);
+    $("#infoTareasPendientes").text(`Pendientes: ${pendientes.length}`);
+    $("#infoTareasContTiempo").text(`Completas: ${completas.length}`);
+    $("#infoTareasTareasVencidas").text(`Vencidas: ${tareasVencidas.length}`);
+       
+
+    data.forEach(task => {
+
+        const hoy = new Date();
         const dueDate = new Date(task.fechaFinalizacion);
         let colorClass = "";
         let condicion = "";
 
         // Determine the color based on the date comparison
-        if (dueDate < currentDate) {
+        if (dueDate < hoy) {
             // Task is delayed
             colorClass = "text-danger"; // Red
             condicion = "Vencida"
-        } else if (dueDate.toDateString() === currentDate.toDateString()) {
+        } else if (dueDate.toDateString() === hoy.toDateString()) {
             // Task is due today
             colorClass = "text-warning";
             condicion = "Por vencer"
@@ -186,7 +204,7 @@ $(document).on('click', '.btn-Marcar', function (e) {
         success: function (data) {
             // Remove the card from the DOM after successful deletion
             /*  $('div[data-task-id="' + taskId + '"]').remove();*/
-            cargarTareas();
+            cargarTareas("");
         },
         error: function (err) {
             console.error('Error deleting task:', err);
@@ -221,7 +239,7 @@ $(document).on('submit', '#createTaskForm', function (e) {
                 $('#createTaskForm')[0].reset();
 
                 // Reload tasks
-                cargarTareas();
+                cargarTareas("");
             } else {
                 console.error('Error creating task');
             }
@@ -279,7 +297,7 @@ $(document).on('submit', '#editTaskForm', function (e) {
                 $('#editTaskModal').modal('hide');
 
                 // Reload tasks
-                cargarTareas();
+                cargarTareas("");
             } else {
                 console.error('Error updating task');
             }
