@@ -17,6 +17,7 @@ public static class Dependencias
         }
         if (useSqlite)
         {
+            //var connectionString = configuration.GetConnectionString("SQLITECONNECTIONSTRING");
             var connectionString = Environment.GetEnvironmentVariable("SQLITECONNECTIONSTRING", EnvironmentVariableTarget.User);
 
             services.AddDbContext<TareasContext>(options =>

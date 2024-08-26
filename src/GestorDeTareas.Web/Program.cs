@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 //ar connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 
-builder.Services.AgregarDbContext(builder.Configuration, true);
+builder.Services.AgregarDbContext(builder.Configuration,   useSqlite: true);
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
