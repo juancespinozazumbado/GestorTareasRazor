@@ -37,14 +37,29 @@ namespace GestorDeTareas.Web.Pages
 
             tareas = tareas.Where(tarea => tarea.UsuarioId.Equals(User.Identity.Name));
 
+            // se aplica el filtro segun titulo o dscripcion
             if (!string.IsNullOrEmpty(searchQuery))
             {
                 var query = searchQuery.ToLower();
-                //tareas = tareas.Where(tarea => tarea.Titulo.Contains(searchQuery) || tarea.Descripcion.Contains(searchQuery));
+               
                  tareas = tareas.Where(tarea => tarea.Titulo.ToLower().Contains(query) || tarea.Descripcion.ToLower().Contains(searchQuery));
               
             }
-            Tareas = tareas.ToList();   
+
+            // ordenamos las tareas segun la fecha de vencimiento
+            var TareasOrdenadas =
+                    from m in tareas
+                    orderby m.FechaFinalizacion ascending
+                     select m;
+
+
+            Tareas = TareasOrdenadas.ToList();
+
+            //if (Tareas.Any())
+            //{
+            //    Tareas.Sort( (a , b) => a.FechaFinalizacion.CompareTo(b.FechaFinalizacion));
+            //}
+
 
             return new JsonResult(Tareas);
 
