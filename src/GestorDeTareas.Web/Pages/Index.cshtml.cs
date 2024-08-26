@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Metrics;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 
 namespace GestorDeTareas.Web.Pages
@@ -21,12 +23,28 @@ namespace GestorDeTareas.Web.Pages
         {
             _logger = logger;
             _context = contex;
+          
         }
+
+        [BindProperty]
         public List<Tarea> Tareas { get; set; }
 
-        public IActionResult OnGetTareas()
+        public IActionResult OnGetTareas(string searchQuery = null)
         {
-           Tareas = _context.Tareas.Where(tarea=> tarea.UsuarioId.Equals(User.Identity.Name)).ToList();   
+            var tareas = _context.Tareas.AsQueryable();
+
+            // primero aseguramos que pertenecen al usuario
+
+            tareas = tareas.Where(tarea => tarea.UsuarioId.Equals(User.Identity.Name));
+
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                var query = searchQuery.ToLower();
+                //tareas = tareas.Where(tarea => tarea.Titulo.Contains(searchQuery) || tarea.Descripcion.Contains(searchQuery));
+                 tareas = tareas.Where(tarea => tarea.Titulo.ToLower().Contains(query) || tarea.Descripcion.ToLower().Contains(searchQuery));
+              
+            }
+            Tareas = tareas.ToList();   
 
             return new JsonResult(Tareas);
 
@@ -49,6 +67,19 @@ namespace GestorDeTareas.Web.Pages
                 isTerminada = tarea.IsTerminada
             });
         }
+
+       public IActionResult OnGetFiltarTarea(string parametro = null)
+        {
+            
+            var tareas = _context.Tareas.Where( tarea => tarea.Titulo.Contains(parametro) || tarea.Descripcion.Contains(parametro));
+
+            if (tareas.Any())
+            {
+                return new JsonResult(tareas);
+            }
+            else return new JsonResult(new { });
+        }
+
 
         public IActionResult OnPostEliminar(string id)
         {
@@ -129,6 +160,8 @@ namespace GestorDeTareas.Web.Pages
             return new JsonResult(new { success = true });
 
         }
+
+
 
     }
 }

@@ -3,10 +3,71 @@
 @{
     ViewData["Title"] = "Home page";
 }
-<div class="mb-3">
+
+<div class="container-fluid mt-4">
+    <!-- Page Title -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2>Gestion de Tareas </h2>
+        </div>
+    </div>
+
+    <!-- Card de Bienvenida -->
+    <div class="row mb-4">
+        <div class="col-12 col-md-6 d-flex align-items-stretch">
+            <div class="card flex-fill border-0">
+                <div class="card-body d-flex flex-column p-0">
+                    <div class="row g-0 w-100">
+                        <div class="col-12 col-md-6 p-3">
+                            <h5>Bienvenido nuevamente @User.Identity.Name.Split("@").First()</h5>
+                            <p class="mb-0">Gestor de Tareas</p>
+                            <!-- Button to trigger modal -->
+                            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#createTaskModal">
+                                <i class="bi bi-plus-circle-fill"></i> Nueva
+                            </button>
+                        </div>
+                        <div class="col-12 col-md-6 text-end d-flex align-items-end">
+                            <img src="image/customer-support.jpg" class="img-fluid illustration-img" alt="">
+                            <div class="input-group rounded ms-md-3">
+                                <input type="search" class="form-control rounded" id="search-input" placeholder="Buscar..." aria-label="Search" aria-describedby="search-addon" />
+                                <span class="input-group-text border-0" id="search-addon">
+                                    <i class="bi bi-search"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+@*         Card de resumen *@
+        <div class="col-12 col-md-6 d-flex align-items-stretch">
+            <div class="card flex-fill border-0">
+                <div class="card-body py-4">
+                    <div class="d-flex align-items-start">
+                        <div class="flex-grow-1">
+                            <h4 class="mb-2" id="infoTareasCompletas"></h4>
+                            <p class="mb-2" id="infoTareasPendientes"></p>
+                            <div class="mb-0">
+                                <span class="badge text-success me-2" id="infoTareasContTiempo"></span>
+                                <span class="text-muted" id="infoTareasTareasVencidas"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@* <div class="mb-3">
     <h4>Admin Dashboard</h4>
 </div>
-<div class="row">
+
+ *@
+
+@* <div class="row">
     <div class="col-12 col-md-6 d-flex">
         <div class="card flex-fill border-0 illustration">
             <div class="card-body p-0 d-flex flex-fill">
@@ -25,6 +86,12 @@
                     <div class="col-6 align-self-end text-end">
                         <img src="image/customer-support.jpg" class="img-fluid illustration-img"
                              alt="">
+                                <div class="input-group rounded">
+                                    <input type="search" class="form-control rounded" id="search-input" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                                    <span class="input-group-text border-0" id="search-addon">
+                                        <i class="bi bi-search"></i>
+                                    </span>
+                                </div>
                     </div>
                 </div>
             </div>
@@ -54,7 +121,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> *@
 
 
 
@@ -131,11 +198,11 @@
 
 
 
-<div class="p-3 m-1">
+<div class="p-3 m-1" id="titulo-Pendientes">
     <h4>Tareas Pendientes</h4>
 </div>
 
-<!-- Table Element -->
+<!-- Tareas pendientes -->
 <div class="card border-0" >
 
     <section style="background-color: #eee;">
@@ -150,11 +217,11 @@
 
 </div>
 
-<div class="p-3 m-1">
+<div class="p-3 m-1" id="titulo-Comnpletas">
     <h4>Tareas completadas</h4>
 </div>
 
-<div class="card border-0" >
+<div class="card border-0" ">
 
     <section style="background-color: #eee;">
         <div class="container py-5">

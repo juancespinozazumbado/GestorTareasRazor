@@ -1,6 +1,6 @@
 $(document).ready(function () {
-    cargarTareas();
 
+    cargarTareas("");
 
 });
 
@@ -10,64 +10,86 @@ $(document).ready(function () {
 */
 
 
-function cargarTareas() {
+function cargarTareas(query) {
 
     $.ajax({
-        url: '/Index?handler=Tareas', // Endpoint to fetch tasks
+        url: '/Index?handler=Tareas',
         type: 'GET',
+        data: { searchQuery: query },
         success: function (data) {
-
+             
             console.log(data);
+            renderTareas(data);
 
-            //const tableCompletas = $('#tareasCompletasTable tbody');
-            //const tablePendientes = $('#tareasPendientesTable tbody');
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
+   
+}
 
-            const seccionCompletas = document.getElementById("Tareas-completas");
-            const seccionPendientes = document.getElementById("Tareas-pendientes");
-
-            //tablePendientes.empty(); // Clear the table
-            //tableCompletas.empty();
-
-            var completas = data.filter(task => task.isTerminada === true);
-            var pendientes = data.filter(task => task.isTerminada === false);
-
-            console.log(completas);
-            console.log(pendientes);
-
-            let completedTasksHtml = '';
-            let pendingTasksHtml = '';
-
-            data.forEach(task => {
-                var hoy = Date.now();
-
-                const currentDate = new Date();
-                const dueDate = new Date(task.fechaFinalizacion);
-                let colorClass = "";
-                let condicion = "";
-
-                // Determine the color based on the date comparison
-                if (dueDate < currentDate) {
-                    // Task is delayed
-                    colorClass = "text-danger"; // Red
-                    condicion ="Vencida"
-                } else if (dueDate.toDateString() === currentDate.toDateString()) {
-                    // Task is due today
-                    colorClass = "text-warning"; 
-                    condicion = "Por vencer"
-                } else {
-                    // Task is still ongoing
-                    colorClass = "text-primary"; 
-                    condicion = "En tiemnpo"
-                }
+function renderTareas(data) {
 
 
-                const taskCard = `
+    var completas = data.filter(task => task.isTerminada === true);
+    var pendientes = data.filter(task => task.isTerminada === false);
+
+    console.log(completas);
+    console.log(pendientes);
+
+    let completedTasksHtml = '';
+    let pendingTasksHtml = '';
+
+    var hoy = Date.now();
+
+    var tareasVencidas = data.filter(task => {
+        const fecha = new Date(task.fechaFinalizacion);
+        return fecha < hoy;
+    });
+
+    var tareasContTiempo = data.filter(task => {
+        const fecha = new Date(task.fechaFinalizacion);
+        return fecha > hoy;
+
+    });
+
+    $("#infoTareasCompletas").text(`Tareas : ${data.length}`);
+    $("#infoTareasPendientes").text(`Pendientes: ${pendientes.length}`);
+    $("#infoTareasContTiempo").text(`Completas: ${completas.length}`);
+    $("#infoTareasTareasVencidas").text(`Vencidas: ${tareasVencidas.length}`);
+       
+
+    data.forEach(task => {
+
+        const hoy = new Date();
+        const dueDate = new Date(task.fechaFinalizacion);
+        let colorClass = "";
+        let condicion = "";
+
+        // Determine the color based on the date comparison
+        if (dueDate < hoy) {
+            // Task is delayed
+            colorClass = "text-danger"; // Red
+            condicion = "Vencida"
+        } else if (dueDate.toDateString() === hoy.toDateString()) {
+            // Task is due today
+            colorClass = "text-warning";
+            condicion = "Por vencer"
+        } else {
+            // Task is still ongoing
+            colorClass = "text-primary";
+            condicion = "En tiemnpo"
+        }
+
+
+        const taskCard = `
                      <div class="col-md-12 col-lg-4 mb-4 mb-lg-0">
                         <div class="card">
                           <div class="d-flex justify-content-between p-3">
                             <h5 class=" mb-0">${task.titulo}</h5>
                             <div
-                              class="${task.isTerminada ? "bg-success": "bg-dark"} rounded-circle d-flex align-items-center justify-content-center shadow-1-strong"
+                              class="${task.isTerminada ? "bg-success" : "bg-dark"} rounded-circle d-flex align-items-center justify-content-center shadow-1-strong"
                               style="width: 35px; height: 35px;">
                               <p class="text-white mb-0 small"> <i class="${task.isTerminada ? "bi bi-check2-circle" : "bi bi-x-circle"}"></i></p>
                             </div>
@@ -76,8 +98,9 @@ function cargarTareas() {
                           <div class="card-body">
                             <div class="d-flex justify-content-between">
                              
-                               <p class="text-dark mb-0">Fecha : ${new Date(task.fechaFinalizacion).toDateString()}</p>
-                                <h5 class="${colorClass} ">${condicion === "Vencida" ? "<s>"+ condicion + "</s>" : condicion}  </h5>
+                               <p class="text-dark mb-0">Fecha : ${new Date(task.fechaFinalizacion).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}
+</p>
+                                <h5 class="${colorClass} ">${condicion === "Vencida" ? "<s>" + condicion + "</s>" : condicion}  </h5>
                             </div>
 
                             <div class="d-flex justify-content-between mb-4">
@@ -101,29 +124,37 @@ function cargarTareas() {
                         </div>
                       </div>
                             `;
-                if (task.isTerminada) {
-                    completedTasksHtml += taskCard;
-                } else {
-                    pendingTasksHtml += taskCard;
-                }
-            });
+        if (task.isTerminada) {
+            completedTasksHtml += taskCard;
+        } else {
+            pendingTasksHtml += taskCard;
+        }
+    });
 
-            $("#Tareas-completas").empty();
-            $("#Tareas-pendientes").empty();
+    $("#titulo-Pendientes").hide();
+    $("#titulo-Comnpletas").hide();
+    $("#Tareas-completas").empty();
+    $("#Tareas-pendientes").empty();
+  
 
+    if (pendientes.length > 0) {
+        $("#titulo-Pendientes").show();
+        $("#Tareas-pendientes").append(pendingTasksHtml);
+    }
+    if (completas.length > 0) {
+        $("#titulo-Comnpletas").show();
+        $("#Tareas-completas").append(completedTasksHtml);
+    }
 
-             $("#Tareas-completas").append(completedTasksHtml);
-             $("#Tareas-pendientes").append(pendingTasksHtml);
-
-
-
-         },
-         error: function (error) {
-             console.log(error);
-         }
-     });
 }
 
+
+/**************** BUSQUEDA **************************/
+
+$("#search-input").on("input", function () {
+    const searchQuery = $(this).val();
+    cargarTareas(searchQuery);
+});
 
 
 $(document).on('click', '.btn-delete', function (e) {
@@ -173,7 +204,7 @@ $(document).on('click', '.btn-Marcar', function (e) {
         success: function (data) {
             // Remove the card from the DOM after successful deletion
             /*  $('div[data-task-id="' + taskId + '"]').remove();*/
-            cargarTareas();
+            cargarTareas("");
         },
         error: function (err) {
             console.error('Error deleting task:', err);
@@ -208,7 +239,7 @@ $(document).on('submit', '#createTaskForm', function (e) {
                 $('#createTaskForm')[0].reset();
 
                 // Reload tasks
-                cargarTareas();
+                cargarTareas("");
             } else {
                 console.error('Error creating task');
             }
@@ -266,7 +297,7 @@ $(document).on('submit', '#editTaskForm', function (e) {
                 $('#editTaskModal').modal('hide');
 
                 // Reload tasks
-                cargarTareas();
+                cargarTareas("");
             } else {
                 console.error('Error updating task');
             }

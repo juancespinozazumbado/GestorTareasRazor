@@ -60,7 +60,6 @@ namespace GestorDeTareas.Web.Pages.Cuenta
         }
 
         //Cuenta/Login?handler=Logout
-       
         public async Task<IActionResult> OnPostLogout()
         {
             try
