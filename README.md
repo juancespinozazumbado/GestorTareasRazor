@@ -61,6 +61,7 @@ builder.Services.AgregarDbContext(builder.Configuration, useSqlite: false);
 De lo contrario debe efectuar las migraciones antes de probar la aplicacion
 para efectuar las migraciones primero debe descargar el componente ef-tool
 ```
+dotnet tool update --global dotnet-ef
 ```
 
 luego ejecutar en la carpeta del projecto `src/GestorDeTareas.Web/ `
@@ -69,14 +70,6 @@ dotnet restore
 dotnet tool restore
 dotnet ef database update 
 ````
-
- #### To install client
-
- ```
-   powershell -ex AllSigned -c "Invoke-RestMethod 'https://aka.ms/install-azd.ps1' | Invoke-Expression"
-
- ```
-
 
  ## (opcional) despliege usando docker y docker-compose
 
@@ -90,12 +83,12 @@ pasos para el depliegue:
 crear un archivo `.env` en la raiz del projecto : 
 
 ```
-DB_PASSWD={tu_Contraseña_SQLServer}
+DB_PASSWD={tu_ContraseÃ±a_SQLServer}
 SQLSERVERCONNECTION="Server= SqlServer;Initial Catalog= GestorTareas; User=sa; Password=${DB_PASSWD};TrustServerCertificate=true"
 SQLITECONNECTIONSTRING="Data Source=./wwwroot/Data/SQLITEDATABASE.sqlite"
 ```
 
-Reemplazar los valores para `tu_Contraseña_SQLServer` y  `${DB_PASSWD}` con sus credenciales y guardarlos de manera segura. 
+Reemplazar los valores para `tu_ContraseÃ±a_SQLServer` y  `${DB_PASSWD}` con sus credenciales y guardarlos de manera segura. 
 
 Ubiarse en la carpeta raiz del projecto y correr el projecto usando docker-compose
 
