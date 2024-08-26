@@ -68,33 +68,33 @@
         </div>
 
         <!-- Registration Form -->
-        <h3 class="text-center mb-4">Register</h3>
+        <h3 class="text-center mb-4">Auto Gestion Tareas</h3>
 
         <form method="post">
             <div class="mb-3 position-relative">
-                <label asp-for="Input.Email"></label>
+                <label asp-for="Input.Email">Correo Electronico</label>
                 <input asp-for="Input.Email" class="form-control" />
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
             <div class="mb-3 position-relative">
-                <label asp-for="Input.Password"></label>
+                <label asp-for="Input.Password">Contraseña</label>
                 <input asp-for="Input.Password" type="password" class="form-control" />
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
             <div class="mb-3 position-relative">
-                <label asp-for="Input.ConfirmPassword"></label>
+                <label asp-for="Input.ConfirmPassword">Confirmar contraeña</label>
                 <input asp-for="Input.ConfirmPassword" type="password" class="form-control" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                 <div class="form-text"></div>
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">Register</button>
+            <button type="submit" class="btn btn-primary w-100">Registrarse</button>
 
         </form>
 
         <!-- Terms and Privacy Links -->
         <p class="text-center small mt-3">
-            Si ya posee una cunenta puede iniciar sescion  <a asp-page="/Cuenta/Login">aqui</a>.
+            Si ya posee una cunenta puede <a asp-page="/Cuenta/Login">iniciar sescion  </a>.
         </p>
     </div>
 </div>

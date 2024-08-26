@@ -13,10 +13,15 @@
                 <div class="row g-0 w-100">
                     <div class="col-6">
                         <div class="p-3 m-1">
-                            <h4>Welcome Back, Admin</h4>
+                            <h4>Bienvenido, @User.Identity.Name</h4>
                             <p class="mb-0">Admin Dashboard, CodzSword</p>
-                        </div>
-                    </div>
+
+                            <!-- Button to trigger modal -->
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createTaskModal">
+                                <i class="bi bi-plus-circle-fill"></i> Nueva
+                            </button>
+
+                         
                     <div class="col-6 align-self-end text-end">
                         <img src="image/customer-support.jpg" class="img-fluid illustration-img"
                              alt="">
@@ -50,46 +55,116 @@
         </div>
     </div>
 </div>
-<!-- Table Element -->
-<div class="card border-0">
-    <div class="card-header">
-        <h5 class="card-title">
-            Basic Table
-        </h5>
-        <h6 class="card-subtitle text-muted">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum ducimus,
-            necessitatibus reprehenderit itaque!
-        </h6>
-    </div>
-    <div class="card-body">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>twitter</td>
-                </tr>
-            </tbody>
-        </table>
+
+
+
+
+        <!-- Modal Crear tarea -->
+        <div class="modal fade" id="createTaskModal" tabindex="-1" aria-labelledby="createTaskModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createTaskModalLabel">Nueva Tarea</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Task creation form -->
+                        <form id="createTaskForm" method="post">
+                            <div class="mb-3">
+
+                                <label for="taskName" class="form-label">Titulo</label>
+                                <input asp-for="Tarea.Titulo" type="text" class="form-control" id="taskName" name="Titulo" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="taskDescription" class="form-label">Description</label>
+                                <textarea asp-for="Tarea.Descripcion" class="form-control" id="taskDescription" name="Descripcion" rows="3" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="taskDueDate" class="form-label">Fecha</label>
+                                <input asp-for="Tarea.FechaFinalizacion" type="date" class="form-control" id="taskDueDate" name="FechaFinalizacion" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Crear</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+
+<!-- Modal Editar tarea-->
+<div class="modal fade" id="editTaskModal" tabindex="-1" aria-labelledby="createTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createTaskModalLabel">Editar Tarea</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Task creation form -->
+                <form id="editTaskForm" method="post">
+                    <div class="mb-3">
+                        <input asp-for="Tarea.Id" hidden="hidden" type="text" class="form-control" id="editarTareaId" name="Id" required>
+
+                        <label for="taskName" class="form-label">Titulo</label>
+                        <input asp-for="Tarea.Titulo" type="text" class="form-control" id="editarTareaTitulo" name="Titulo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="taskDescription" class="form-label">Description</label>
+                        <textarea asp-for="Tarea.Descripcion" class="form-control" id="editarTareaDescripcion" name="Descripcion" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="taskDueDate" class="form-label">Fecha</label>
+                        <input asp-for="Tarea.FechaFinalizacion" type="date" class="form-control" id="editarTareaFechaFinalizacion" name="FechaFinalizacion" required>
+                    </div>
+                @*     <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="editarTareaIsTerminada" name="IsTerminada">
+                        <label asp-for="Tarea.IsTerminada" 1class="form-check-label" for="editTaskCompleted">Completed</label>
+                    </div> *@
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="p-3 m-1">
+    <h4>Tareas Pendientes</h4>
+</div>
+
+<!-- Table Element -->
+<div class="card border-0" >
+
+    <section style="background-color: #eee;">
+        <div class="container py-5">
+            @Html.AntiForgeryToken()
+            <div class="row row-cols-1 row-cols-md-4 g-4" id="Tareas-pendientes">
+
+
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<div class="p-3 m-1">
+    <h4>Tareas completadas</h4>
+</div>
+
+<div class="card border-0" >
+
+    <section style="background-color: #eee;">
+        <div class="container py-5">
+            @Html.AntiForgeryToken()
+            <div class="row row-cols-1 row-cols-md-4 g-4" id="Tareas-completas">
+            </div>
+        </div>
+    </section>
+
+</div>
+
+
+

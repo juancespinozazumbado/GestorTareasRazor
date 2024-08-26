@@ -1,6 +1,10 @@
+using GestorDeTareas.Web.Data;
+using GestorDeTareas.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace GestorDeTareas.Web.Pages
 {
@@ -9,29 +13,126 @@ namespace GestorDeTareas.Web.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
+        private readonly TareasContext _context;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        [BindProperty]
+        public Tarea Tarea { get; set; }
+        public IndexModel(ILogger<IndexModel> logger, TareasContext contex)
         {
             _logger = logger;
+            _context = contex;
         }
-        public List<FileModel> Files { get; set; }
+        public List<Tarea> Tareas { get; set; }
 
-        public void OnGet()
+        public IActionResult OnGetTareas()
         {
-            // Simulate fetching files from a database or storage
-            Files = new List<FileModel>
-        {
-            new FileModel { Name = "Document1.docx", Size = 150 },
-            new FileModel { Name = "Image1.jpg", Size = 2048 },
-            new FileModel { Name = "Presentation.pptx", Size = 532 }
-        };
+           Tareas = _context.Tareas.Where(tarea=> tarea.UsuarioId.Equals(User.Identity.Name)).ToList();   
+
+            return new JsonResult(Tareas);
+
         }
-    }
 
-    public class FileModel
-    {
-        public string Name { get; set; }
-        public int Size { get; set; } // In KB
+        public IActionResult OnGetDetallesTarea(string id)
+        {
+           var tarea = _context.Tareas.FirstOrDefault(tarea => tarea.Id == new Guid(id));
+           if(tarea == null)
+            {
+                return NotFound();
+            }
+
+            return new JsonResult(new
+            {
+                id = tarea.Id,
+                titulo = tarea.Titulo,
+                descripcion = tarea.Descripcion,
+                fechaFinalizacion = tarea.FechaFinalizacion.ToString("yyyy-MM-dd"), 
+                isTerminada = tarea.IsTerminada
+            });
+        }
+
+        public IActionResult OnPostEliminar(string id)
+        {
+            var tarea = _context.Tareas.Where(tarea => tarea.Id == new Guid(id)).FirstOrDefault();
+            if(tarea != null)
+            {
+                _context.Tareas.Remove(tarea); 
+                _context.SaveChanges();
+              
+                return new JsonResult(new { success = true});
+            }else
+            {
+                return new JsonResult(new {success = false});
+            }
+        }
+
+        public IActionResult OnPostMarcarTarea(string id)
+        {
+            var tarea = _context.Tareas.FirstOrDefault(tarea => tarea.Id == new Guid(id));
+            if (tarea != null)
+            {
+               tarea.IsTerminada = !tarea.IsTerminada;
+                _context.SaveChanges();
+
+                return new JsonResult(new { success = true });
+            }
+            else
+            {
+                return new JsonResult(new { success = false });
+            }
+        }
+
+
+        public async Task<IActionResult> OnPostCrearTarea(Tarea tarea)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+
+            }
+            var nuevaTarea = new Tarea { 
+                Id = Guid.NewGuid(), Titulo = tarea.Titulo, 
+                FechaFinalizacion = tarea.FechaFinalizacion, 
+                Descripcion = tarea.Descripcion, IsTerminada = false,
+                UsuarioId = User.Identity.Name};
+           _context.Tareas.Add(nuevaTarea);  
+            await _context.SaveChangesAsync();
+
+            return new JsonResult(new { success = true });
+
+        }
+
+        public async Task<IActionResult> OnPostEditarTarea(Tarea tarea)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+
+            }
+
+            var treaporEditar = _context.Tareas.FirstOrDefault(t => t.Id == tarea.Id);
+            if(tarea == null)
+            {
+                return BadRequest();
+            }
+
+            treaporEditar.Titulo = tarea.Titulo;
+            treaporEditar.Descripcion = tarea.Descripcion;
+            treaporEditar.FechaFinalizacion = tarea.FechaFinalizacion;
+            treaporEditar.IsTerminada = tarea.IsTerminada;
+
+            _context.Tareas.Update(treaporEditar);
+
+            await _context.SaveChangesAsync();
+
+            return new JsonResult(new { success = true });
+
+        }
+
     }
 }
+
+
+
 
