@@ -79,7 +79,7 @@ function renderTareas(data) {
         } else {
             // Task is still ongoing
             colorClass = "text-primary";
-            condicion = "En tiemnpo"
+            condicion = "A tiempo"
         }
 
 

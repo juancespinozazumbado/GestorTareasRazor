@@ -19,7 +19,7 @@ $("#logout").click(function (e) {
      
             success: function (response) {
                 if (response.status == "Ok") {
-                    alert(response.status);
+                   /* alert(response.status);*/
                     window.location.href = '/';
                 } else {
                     alert('Logout failed.');
